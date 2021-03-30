@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Http\Controllers\Controller;
-use App\Providers\RouteServiceProvider;
 use App\Models\User;
-use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use App\Providers\RouteServiceProvider;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Foundation\Auth\RegistersUsers;
+use App\Notifications\AccountConfirmationNotification;
 
 class RegisterController extends Controller
 {
@@ -72,4 +75,23 @@ class RegisterController extends Controller
             'password' => Hash::make($data['password']),
         ]);
     }
+
+
+    //User Notification
+    protected function registered(Request $request, $user)
+    {
+        //Mail Notification
+        //Mail::to($request->user())->send(new MailableClass);
+
+        $user -> notify(new AccountConfirmationNotification($user));
+        //User Return
+        Auth::logout();
+        return redirect()->route('login');
+
+
+
+    }
+
+
+
 }

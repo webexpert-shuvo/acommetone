@@ -21,5 +21,6 @@ use Illuminate\Support\Facades\Route;
     Auth::routes();
 
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-
     Route::get('/mailtext',[App\Http\Controllers\MailControlelr::class, 'index'])->name('mailtest');
+
+
